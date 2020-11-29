@@ -7,6 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/get');
 var usersRouter = require('./routes/users');
 
+var otpRouter = require('./routes/otp');
+
 var app = express();
 
 // view engine setup
@@ -21,12 +23,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/otp', otpRouter);
+
+const fs = require('fs')
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
+var dir = './database';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
+dir = './database/users';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
